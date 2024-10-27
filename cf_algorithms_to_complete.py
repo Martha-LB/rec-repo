@@ -54,7 +54,7 @@ def rate_all_items(orig_utility_matrix, user_index, neighborhood_size):
     print(f"similarities: {similarities}\n")
 
     def rate_one_item(item_index):
-        """预测给定项 item_index 的评分"""
+        """predict rating of item_index"""
         # If the user has already rated the item, return the rating
         if not np.isnan(orig_utility_matrix[item_index, user_index]):
             return orig_utility_matrix[item_index, user_index]
