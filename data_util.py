@@ -107,14 +107,9 @@ def load_movielens_tf(config):
                               with_info=True)
     print(
         f"Loaded dataset '{config.dataset_base_name}' with {ratings.cardinality()} ratings and features: {info.features}")
-    assert isinstance(ratings, tf.data.Dataset) #确保 ratings 是一个 tf.data.Dataset 对象
-
+    assert isinstance(ratings, tf.data.Dataset)
     # The dataset has more features, but we only need the following
     print("Filtering tf dataset for user_id, movie_id and user_rating")
-    # map函数遍历数据集的每一条记录，将指定的函数应用于每个元素，并返回一个新的数据集
-    # lambda 是一种用于定义匿名函数的方式，x 代表数据集中每一条记录，是一个字典
-    # 代码块中的大括号 {} 表示一个字典
-    # 在这里map遍历ratings数据集中每一条数据，每条数据都被传递给匿名函数lambda，赋值给x，然后根据x提取中其中的user_id等等，构建一个新字典
     ratings = ratings.map(lambda x: {
         "user_id": x["user_id"],
         "movie_id": x["movie_id"],
@@ -122,14 +117,11 @@ def load_movielens_tf(config):
     })
 
     print("Creating a vocabulary for user_id (str -> int)")
-    # user_id_data 的类型是 tf.data.Dataset
-    # StringLookup 是 TensorFlow Keras 提供的一种层，主要用于将字符串映射为整数索引
+
     user_id_data = ratings.map(lambda x: x["user_id"])
     user_ids_voc = tf.keras.layers.StringLookup(mask_token=None)
-    #在实例化 StringLookup 后，你需要调用其 adapt 方法，该方法会根据给定的数据（如 user_id_data）创建一个字典，将每个唯一的字符串映射为一个唯一的整数索引
     # https://www.tensorflow.org/api_docs/python/tf/keras/layers/StringLookup#adapt
-    user_ids_voc.adapt(user_id_data.batch(10000)) #  处理前 10000 个用户 ID，并构建相应的映射
-    # get_vocabular方法返回 StringLookup 层内部维护的词汇表，包含所有唯一的用户 ID 及其对应的整数索引
+    user_ids_voc.adapt(user_id_data.batch(10000))
     print(f"Vocabulary of user_id's has size: {len(user_ids_voc.get_vocabulary())}")
 
     print("Creating a vocabulary for movie_id (str -> int)")
@@ -139,15 +131,11 @@ def load_movielens_tf(config):
     print(f"Vocabulary of movie_id's has size: {len(movie_ids_voc.get_vocabulary())}")
 
     # Map the string user_id and movie_id to integer indices
-    # user_ids_voc(x["user_id"]) 将用户 ID 传入 StringLookup 层，返回对应的整数索引
     ratings = ratings.map(lambda x: {
         "user_id": user_ids_voc(x["user_id"]),
         "movie_id": movie_ids_voc(x["movie_id"]),
         "user_rating": x["user_rating"]
     })
-    # 此时，ratings是一个dataset，每条记录都是一条字典，只是原本的值由字符被转化成了整数
-    # user_ids_voc, movie_ids_voc的类型是tf.keras.layers.StringLookup，分别是用于用户 ID 字符串到整数索引映射的对象和用于电影 ID 字符串到整数索引映射的对象，通过调用 get_vocabulary() 方法，可以获取映射的详细信息
-    # 举例：movie_ids_voc("movie_1") 会返回 1
     return ratings, user_ids_voc, movie_ids_voc
 
 
@@ -159,12 +147,10 @@ def split_train_valid_test_tf(ratings_tf, split_ratios):
     Returns:
         train_ds, valid_ds, test_ds: the datasets
     """
-    # cardinality() 方法用于获取数据集中元素的数量。它返回一个 tf.int64 类型的张量, numpy()将张量转化为一个numpy数组，便于查看
     num_samples = ratings_tf.cardinality().numpy()
     print(f"Splitting the dataset into train, validation and test sets with sizes: {split_ratios}")
 
     # Shuffle the dataset
-    # shuffle方法会对数据集的元素进行随机排列（打乱），设置seed保证数据集在每次运行时被打乱的顺序相同，False表示数据集在每次训练迭代时保持相同的打乱顺序
     ratings_tf = ratings_tf.shuffle(num_samples, seed=42, reshuffle_each_iteration=False)
 
     # Split the dataset
@@ -172,8 +158,8 @@ def split_train_valid_test_tf(ratings_tf, split_ratios):
     valid_size = int(num_samples * split_ratios[1])
     test_size = num_samples - train_size - valid_size
 
-    train_ds = ratings_tf.take(train_size) # 从数据集 ratings_tf 中提取前 train_size 个样本
-    valid_ds = ratings_tf.skip(train_size).take(valid_size) #跳过 train_size 个样本，从第 train_size+1 个样本开始
+    train_ds = ratings_tf.take(train_size) 
+    valid_ds = ratings_tf.skip(train_size).take(valid_size) 
     test_ds = ratings_tf.skip(train_size + valid_size).take(test_size)
     print(
         f"Absolute sizes => Train: {train_ds.cardinality()}, Validation: {valid_ds.cardinality()}, Test: {test_ds.cardinality()}")
@@ -194,6 +180,6 @@ if __name__ == '__main__':
 
     # Split the dataset
     train_ds, valid_ds, test_ds = split_train_valid_test_tf(ratings_tf, ConfigLf.split_ratios)
-    print_sample_of_tf_dataset(train_ds, "Training:") # 从数据集 train_ds 中打印一部分样本
+    print_sample_of_tf_dataset(train_ds, "Training:")
     print_sample_of_tf_dataset(valid_ds, "Validation:")
     print_sample_of_tf_dataset(test_ds, "Test:")
