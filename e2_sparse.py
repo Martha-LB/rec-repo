@@ -10,7 +10,8 @@ def center(matrix):
     matrix = matrix.astype(float)
 
     if matrix.shape[0] == 1 or matrix.shape[1] == 1:
-        mean_value = matrix.mean().astype(float)
+        mean_value = matrix.data.mean().astype(float)
+        # print(f"mean is {mean_value}")
         if matrix.nnz == 0:
             return matrix
         centered_data = matrix.copy()
@@ -28,9 +29,11 @@ def center(matrix):
         return centered_data
     
     else:
-        users_means = np.array(matrix.mean(axis=0)).flatten()
+        # users_means = np.array(matrix.mean(axis=0)).flatten()
+        # print(f"users_means is {users_means}")
         centered_matrix = matrix.copy()
         for user in range(centered_matrix.shape[1]):
+            user_mean = centered_matrix[:,user].data.mean().astype(float)
             nonzero_indices = centered_matrix[:, user].nonzero()[0] 
 
             if len(nonzero_indices) == 0:
@@ -40,7 +43,7 @@ def center(matrix):
             dense_values = centered_matrix[nonzero_indices, user].toarray().flatten()
         
             # Performs subtraction on dense arrays
-            dense_values -= users_means[user]
+            dense_values -= user_mean
 
             # tocsc
             # Update the values in the original matrix
