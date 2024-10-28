@@ -1,3 +1,4 @@
+# exercise 1
 # Artur Andrzejak, October 2024
 # Algorithms for collaborative filtering
 
@@ -30,9 +31,7 @@ def fast_cosine_sim(utility_matrix, vector, axis=0):
     um_normalized = utility_matrix / norms
     # Compute the dot product of transposed normalized matrix and the vector
     # dot = complete_code("fast_cosine_sim")
-    #
-    ###########################以下是我添加的##########################
-    #
+    #####################################################
     dot = np.dot(np.transpose(vector),um_normalized)
 
     # Scale by the vector norm
@@ -42,7 +41,7 @@ def fast_cosine_sim(utility_matrix, vector, axis=0):
 
 # Implement the CF from the lecture 1
 def rate_all_items(orig_utility_matrix, user_index, neighborhood_size):
-    """为指定用户预测其尚未评分的所有项的评分"""
+    """Predicts the ratings of all items that have not yet been rated for a given user"""
     print(f"\n>>> CF computation for UM w\n shape: "
           + f"{orig_utility_matrix.shape}\n user_index: {user_index}\n neighborhood_size: {neighborhood_size}\n")
     

@@ -1,6 +1,4 @@
-#TensorFlow Datasets 中的 MovieLens 数据集是一个流行的推荐系统数据集，通常用于训练和评估协同过滤模型
-
-#This dataset(100k) contains 100,000 ratings from 943 users on 1,682 movies. This dataset is the oldest version of the MovieLens dataset.
+# exercise 4
 
 import numpy as np
 import polars as pl
@@ -83,12 +81,12 @@ def load_user_vectors(user_ids):
     try:
         with open('user_col.pkl', 'rb') as f:
             user_col = pickle.load(f)
-            print(f"Loaded data for {len(user_col)} users from 'user_col.pkl'")
+            print(f"Loaded {len(user_col)} users at all!\n")
     except FileNotFoundError:
-        print("Error: 'user_col.pkl' file not found.")
+        print("Hey can not find file 'user_col.pkl'.")
         return {}
     except Exception as e:
-        print(f"Error loading 'user_col.pkl': {e}")
+        print(f"Hey an error happened: {e}")
         return {}
 
     # Check if the required user data exists and load the vector for the specified user
@@ -97,13 +95,13 @@ def load_user_vectors(user_ids):
         if user_id in user_col:
             loaded_vectors[user_id] = user_col[user_id]
         else:
-            print(f"Warning: User {user_id} not found in loaded data.")
+            print(f"Hey user {user_id} not found in loaded data.")
     
     # Check the final number of users loaded
     if not loaded_vectors:
-        print("Warning: None of the requested user vectors were found.")
+        print("Here was zero user vector can be found.")
     else:
-        print(f"Successfully loaded vectors for {len(loaded_vectors)} out of {len(user_ids)} requested users.")
+        print(f"Loaded {len(loaded_vectors)} out of {len(user_ids)} requested users.")
     
     return loaded_vectors
 

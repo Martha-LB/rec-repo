@@ -1,3 +1,5 @@
+# exercise 5
+
 from e4_2 import load_user_vectors, rated_by
 from scipy.sparse import coo_array,csr_matrix,coo_matrix,lil_matrix
 from e3_sparse import rate_all_items
@@ -42,7 +44,7 @@ def predict_rating_for_user_item(user_id, item_id):
     return predicted_rating
 
 def measure_memory(user_id, item_id):
-    """Monitoring memory usage"""
+    """ Monitoring memory usage """
     mem_usage = memory_usage((predict_rating_for_user_item, (user_id, item_id)))
     return max(mem_usage)
 

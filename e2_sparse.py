@@ -1,15 +1,18 @@
+# exercise 2
+
 import numpy as np
 
 from scipy.sparse import csr_matrix
 
 def center(matrix):
-    """ Center the matrix """
+    """ Centralized the matrix """
     if not isinstance(matrix, csr_matrix):
-        raise TypeError("Input Error.")
+        raise TypeError("It's not a sparse matrix. Change it.")
     
     matrix = matrix.astype(float)
-
+    # For vector
     if matrix.shape[0] == 1 or matrix.shape[1] == 1:
+        # compute the mean of nonzero values
         mean_value = matrix.data.mean().astype(float)
         # print(f"mean is {mean_value}")
         if matrix.nnz == 0:
@@ -47,8 +50,8 @@ def center(matrix):
 
             # tocsc
             # Update the values in the original matrix
-            for idx, value in zip(nonzero_indices, dense_values):
-                centered_matrix[idx, user] = value
+            for indice, value in zip(nonzero_indices, dense_values):
+                centered_matrix[indice, user] = value
         
         print("Centered matrix:\n", centered_matrix)
 
@@ -77,7 +80,7 @@ def fast_centered_cosine_sim(matrix, vector,axis = 0):
     print(f"Centered cosine similarity: {result}")
     return result
 
-##################test 1####################
+#####################test 1#####################
 np.random.seed(8)
 matrix = np.random.randint(0, 3, size=(5,5))
 vector1 = np.random.randint(0, 3, size=5)
