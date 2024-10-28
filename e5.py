@@ -51,6 +51,7 @@ def measure_memory(user_id, item_id):
 
 if __name__ == '__main__':
     # Predict the rating of a given user
+    # And then I realized I couldn't quite figure it out
     user_id_to_predict = '828'
     item_id_to_predict = '11'
     predicted_ratings = predict_rating_for_user_item(user_id_to_predict,item_id_to_predict)

@@ -152,11 +152,3 @@ if __name__ == '__main__':
     # save
     save_user_col_to_disk(user_col)
 
-    # predict
-    user_id_to_predict = '8'
-    item_id_to_predict = '18'
-    predicted_ratings = predict_rating_for_user_item(user_id_to_predict,item_id_to_predict)
-
-    print(f"Predicted ratings for item{item_id_to_predict} rated by user{user_id_to_predict}: {predicted_ratings}")
-
-
