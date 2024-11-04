@@ -1,8 +1,8 @@
 # exercise 5
 
-from e4_2 import load_user_vectors, rated_by
+from problem_1.e4_2 import load_user_vectors, rated_by
 from scipy.sparse import coo_array,csr_matrix,coo_matrix,lil_matrix
-from e3_sparse import rate_all_items
+from problem_1.e3_sparse import rate_all_items
 from memory_profiler import memory_usage
 
 

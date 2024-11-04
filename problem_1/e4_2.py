@@ -10,8 +10,8 @@ from collections import defaultdict
 import numpy as np
 import shelve
 from scipy.sparse import coo_array,csr_matrix,coo_matrix,lil_matrix
-from e3_sparse import rate_all_items
-from config import ConfigLf
+from problem_1.e3_sparse import rate_all_items
+from problem_1.config import ConfigLf
 import pickle
 
 

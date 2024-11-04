@@ -174,7 +174,7 @@ if __name__ == '__main__':
     # um_lecture = get_um_by_name(ConfigCf, "lecture_1")
 
     # Test the TF dataset loading
-    from config import ConfigLf
+    from problem_1.config import ConfigLf
 
     ratings_tf, user_ids_voc, movie_ids_voc = load_movielens_tf(ConfigLf)
 

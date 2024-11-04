@@ -2,7 +2,7 @@
 
 import numpy as np
 from scipy.sparse import csr_matrix
-from e2_sparse import center
+from problem_1.e2_sparse import center
 
 def centered_cosine_sim(vector1, vector2):
     dot = vector1.dot(vector2.T).A[0, 0]
